@@ -1,0 +1,13 @@
+[workspace]
+authors = ["Allen Guo <guosonglin001@gmail.com>"]
+channels = ["conda-forge"]
+name = "triton-ascend-env"
+platforms = ["osx-arm64", "linux-64"]
+version = "0.1.0"
+
+[tasks]
+
+[dependencies]
+python = "==3.13"
+uv = ">=0.9.17,<0.10"
+pytorch = ">=2.9.1,<3"
