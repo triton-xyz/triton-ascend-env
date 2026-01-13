@@ -34,3 +34,6 @@ go-shfmt = ">=3.12.0,<4"
 fd-find = ">=10.3.0,<11"
 ruff = ">=0.14.11,<0.15"
 ty = ">=0.0.11,<0.0.12"
+
+# [activation.env]
+# PATH = "${PWD}/AscendNPU-IR/build/bin:${PATH}"
