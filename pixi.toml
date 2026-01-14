@@ -35,5 +35,9 @@ fd-find = ">=10.3.0,<11"
 ruff = ">=0.14.11,<0.15"
 ty = ">=0.0.11,<0.0.12"
 
-# [activation.env]
-# PATH = "${PWD}/AscendNPU-IR/build/bin:${PATH}"
+[activation.env]
+# PATH = "${PIXI_PROJECT_ROOT}/AscendNPU-IR/build/bin:${PATH}"
+CANN_PATH_0 = "${PIXI_PROJECT_ROOT}/ascend-cann-toolkit/run_package/ascend-bisheng-toolkit/bishengir/bin"
+CANN_PATH_1 = "${PIXI_PROJECT_ROOT}/ascend-cann-toolkit/run_package/cann-toolkit/toolkit/ccec_compiler/bin"
+PATH = "${CANN_PATH_0}:${CANN_PATH_1}:${PATH}"
+BISHENG_INSTALL_PATH = "${CANN_PATH_0}"
