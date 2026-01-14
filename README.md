@@ -168,3 +168,23 @@ popd
 ## work with `torch_npu`
 
 TODO
+
+## work with `cann` docker image
+
+https://www.hiascend.com/developer/ascendhub/detail/17da20d1c2b6493cb38765adeba85884
+
+```bash
+
+docker pull --platform=amd64 swr.cn-south-1.myhuaweicloud.com/ascendhub/cann:8.5.0.alpha002-910b-ubuntu22.04-py3.11
+docker tag swr.cn-south-1.myhuaweicloud.com/ascendhub/cann:8.5.0.alpha002-910b-ubuntu22.04-py3.11 \
+  cann:8.5.0.alpha002-910b-ubuntu22.04-py3.11
+
+args=(
+  --name cann_dev_0
+  --entrypoint /usr/bin/bash
+  cann:8.5.0.alpha002-910b-ubuntu22.04-py3.11
+)
+docker run -d -it "${args[@]}"
+docker exec -it cann_dev_0 bash
+
+```
