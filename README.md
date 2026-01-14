@@ -171,7 +171,14 @@ TODO
 
 ## work with `flaggems`
 
-TODO
+```bash
+git clone git@github.com:flagos-ai/FlagGems.git
+# git clone https://gitcode.com/gh_mirrors/fl/FlagGems.git
+
+pushd FlagGems
+uv pip install --system --no-build-isolation -e . -v
+popd
+```
 
 ## work with `cann` docker image
 
