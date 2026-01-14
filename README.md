@@ -177,6 +177,10 @@ git clone git@github.com:flagos-ai/FlagGems.git
 
 pushd FlagGems
 uv pip install --system --no-build-isolation -e . -v
+
+export GEMS_VENDOR="ascend"
+python -c "import flag_gems"
+
 popd
 ```
 
