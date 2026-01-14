@@ -81,6 +81,8 @@ chmod +x Ascend-cann-toolkit_8.5.0.alpha002_linux-x86_64.run
 ./Ascend-cann-toolkit_8.5.0.alpha002_linux-x86_64.run --extract=ascend-cann-toolkit
 pushd ascend-cann-toolkit/run_package
 ./Ascend-BiSheng-toolkit_x86.run --extract=ascend-bisheng-toolkit
+# ./CANN-compiler-8.5.t8.0.b060-linux.x86_64.run --extract=cann-compiler
+# ./CANN-toolkit-8.5.t8.0.b060-linux.x86_64.run --extract=cann-toolkit
 popd
 # hivmc, bishengir-opt, bishengir-compile, bishengir-hivm-compile
 # ln -s $PWD/ascend-cann-toolkit/run_package/ascend-bisheng-toolkit/bishengir/bin/* $PWD/.pixi/envs/default/bin/

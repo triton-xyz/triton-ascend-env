@@ -35,5 +35,6 @@ fd-find = ">=10.3.0,<11"
 ruff = ">=0.14.11,<0.15"
 ty = ">=0.0.11,<0.0.12"
 
-# [activation.env]
-# PATH = "${PWD}/AscendNPU-IR/build/bin:${PATH}"
+[activation.env]
+# PATH = "${PIXI_PROJECT_ROOT}/AscendNPU-IR/build/bin:${PATH}"
+BISHENG_INSTALL_PATH = "${PIXI_PROJECT_ROOT}/.pixi/envs/default/bin"
