@@ -42,5 +42,5 @@ CANN_PATH_1 = "${PIXI_PROJECT_ROOT}/ascend-cann-toolkit/run_package/cann-toolkit
 PATH = "${CANN_PATH_0}:${CANN_PATH_1}:${PATH}"
 BISHENG_INSTALL_PATH = "${CANN_PATH_0}"
 # for `triton-ascend`
-MLIR_ROOT = "${PIXI_PROJECT_ROOT}/AscendNPU-IR/build"
-LLVM_ROOT = "${PIXI_PROJECT_ROOT}/AscendNPU-IR/build"
+# MLIR_ROOT = "${PIXI_PROJECT_ROOT}/AscendNPU-IR/build"
+# LLVM_ROOT = "${PIXI_PROJECT_ROOT}/AscendNPU-IR/build"
