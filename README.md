@@ -7,7 +7,6 @@ env for building `triton-ascend` and `AscendNPU-IR`
 - install pixi
 
 ```bash
-
 # https://pixi.prefix.dev/latest/
 curl -fsSL https://pixi.sh/install.sh | sh
 # or download from
@@ -59,7 +58,6 @@ default-channels = ["conda-forge"]
 # # index-url = "https://pypi.org/simple"
 # index-url = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple"
 EOF
-
 ```
 
 - activate pixi
@@ -81,13 +79,15 @@ chmod +x Ascend-cann-toolkit_8.5.0.alpha002_linux-x86_64.run
 ./Ascend-cann-toolkit_8.5.0.alpha002_linux-x86_64.run --extract=ascend-cann-toolkit
 pushd ascend-cann-toolkit/run_package
 ./Ascend-BiSheng-toolkit_x86.run --extract=ascend-bisheng-toolkit
-# ./CANN-compiler-8.5.t8.0.b060-linux.x86_64.run --extract=cann-compiler
 # ./CANN-toolkit-8.5.t8.0.b060-linux.x86_64.run --extract=cann-toolkit
+# ./CANN-compiler-8.5.t8.0.b060-linux.x86_64.run --install-path=cann-compiler
 popd
+
+# prefer `activation.env` in `pixi.toml`
 # hivmc, bishengir-opt, bishengir-compile, bishengir-hivm-compile
 # ln -s $PWD/ascend-cann-toolkit/run_package/ascend-bisheng-toolkit/bishengir/bin/* $PWD/.pixi/envs/default/bin/
 # only use `hivmc`
-ln -s $PWD/ascend-cann-toolkit/run_package/ascend-bisheng-toolkit/bishengir/bin/hivmc $PWD/.pixi/envs/default/bin/hivmc
+# ln -s $PWD/ascend-cann-toolkit/run_package/ascend-bisheng-toolkit/bishengir/bin/hivmc $PWD/.pixi/envs/default/bin/hivmc
 ```
 
 ## build `AscendNPU-IR`
@@ -174,7 +174,6 @@ TODO
 https://www.hiascend.com/developer/ascendhub/detail/17da20d1c2b6493cb38765adeba85884
 
 ```bash
-
 docker pull --platform=amd64 swr.cn-south-1.myhuaweicloud.com/ascendhub/cann:8.5.0.alpha002-910b-ubuntu22.04-py3.11
 docker tag swr.cn-south-1.myhuaweicloud.com/ascendhub/cann:8.5.0.alpha002-910b-ubuntu22.04-py3.11 \
   cann:8.5.0.alpha002-910b-ubuntu22.04-py3.11
@@ -186,5 +185,4 @@ args=(
 )
 docker run -d -it "${args[@]}"
 docker exec -it cann_dev_0 bash
-
 ```
