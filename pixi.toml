@@ -40,7 +40,8 @@ ty = ">=0.0.11,<0.0.12"
 CANN_PATH_0 = "${PIXI_PROJECT_ROOT}/ascend-cann-toolkit/run_package/ascend-bisheng-toolkit/bishengir/bin"
 CANN_PATH_1 = "${PIXI_PROJECT_ROOT}/ascend-cann-toolkit/run_package/cann-toolkit/toolkit/ccec_compiler/bin"
 PATH = "${CANN_PATH_0}:${CANN_PATH_1}:${PATH}"
+# for `AscendNPU-IR`
 BISHENG_INSTALL_PATH = "${CANN_PATH_0}"
 # for `triton-ascend`
-# MLIR_ROOT = "${PIXI_PROJECT_ROOT}/AscendNPU-IR/build"
-# LLVM_ROOT = "${PIXI_PROJECT_ROOT}/AscendNPU-IR/build"
+# MLIR_ROOT = "${PIXI_PROJECT_ROOT}/llvm-ascend/llvm-project/build"
+# LLVM_ROOT = "${PIXI_PROJECT_ROOT}/llvm-ascend/llvm-project/build"
