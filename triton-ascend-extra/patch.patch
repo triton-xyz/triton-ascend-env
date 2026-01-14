@@ -12,7 +12,7 @@ index b7b98838..03798898 100644
  include_directories(${TRITON_ROOT_DIR})
  include_directories(${MLIR_INCLUDE_DIRS})
 diff --git a/ascend/triton-adapter/safe_compile.cmake b/ascend/triton-adapter/safe_compile.cmake
-index 2b29614c..7069d87c 100644
+index 2b29614c..04a256c4 100644
 --- a/ascend/triton-adapter/safe_compile.cmake
 +++ b/ascend/triton-adapter/safe_compile.cmake
 @@ -5,6 +5,6 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fstack-protector-strong")
@@ -26,6 +26,7 @@ index 2b29614c..7069d87c 100644
 +# set(CMAKE_SKIP_RPATH TRUE)
 +# set(CMAKE_INSTALL_RPATH_USE_LINK_PATH FALSE)
 +# unset(CMAKE_INSTALL_RPATH)
+\ No newline at end of file
 diff --git a/setup.py b/setup.py
 index 56819b4e..dcdff93f 100644
 --- a/setup.py
@@ -39,3 +40,15 @@ index 56819b4e..dcdff93f 100644
      cmdclass={
          "build_ext": BuildExt,
          "install": BuildInstall,
+diff --git a/.gitmodules b/.gitmodules
+index b3d4aefb..a31421f5 100644
+--- a/.gitmodules
++++ b/.gitmodules
+@@ -1,6 +1,6 @@
+ [submodule "third_party/triton"]
+ 	path = third_party/triton
+-	url = https://github.com/triton-lang/triton.git
++	url = git@github.com:triton-lang/triton.git
+ 	depth = 1
+ [submodule "third_party/ascendnpu-ir"]
+ 	path = third_party/ascendnpu-ir
