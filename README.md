@@ -167,9 +167,11 @@ popd
 
 ## work with `torch_npu`
 
-TODO
+TODO: how to install torch-npu from src
 
 ## work with `flaggems`
+
+TODO
 
 ```bash
 git clone git@github.com:flagos-ai/FlagGems.git
