@@ -1,54 +1,84 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index b7b98838..03798898 100644
+index 765ddebe..9df943d3 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -143,7 +143,7 @@ function(remove_component_from_property property_name component_to_remove)
- endfunction()
- 
+@@ -26,6 +26,7 @@ option(TRITON_BUILD_TUTORIALS "Build C++ Triton tutorials" ON)
+ option(TRITON_BUILD_PYTHON_MODULE "Build Python Triton bindings" OFF)
+ option(TRITON_BUILD_PROTON "Build the Triton Proton profiler" ON)
+ option(TRITON_BUILD_UT "Build C++ Triton Unit Tests" ON)
++option(TRITON_BUILD_WITH_RISCV_LLVM_COMPONENTS "Build C++ Triton with extra riscv components" ON)
+ set(TRITON_CODEGEN_BACKENDS "" CACHE STRING "Enable different codegen backends")
+
+ # Ensure Python3 vars are set correctly
+@@ -107,7 +108,7 @@ endfunction()
+
+
  # Disable warnings that show up in external code (gtest;pybind11)
 -set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror -Wno-covered-switch-default -fvisibility=hidden")
 +set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror -Wno-covered-switch-default -fvisibility=hidden -Wno-deprecated-declarations")
- 
- include_directories(${TRITON_ROOT_DIR})
+
+ include_directories(".")
  include_directories(${MLIR_INCLUDE_DIRS})
-diff --git a/ascend/triton-adapter/safe_compile.cmake b/ascend/triton-adapter/safe_compile.cmake
-index 2b29614c..04a256c4 100644
---- a/ascend/triton-adapter/safe_compile.cmake
-+++ b/ascend/triton-adapter/safe_compile.cmake
-@@ -5,6 +5,6 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fstack-protector-strong")
- set(CMAKE_POSITION_INDEPENDENT_CODE ON)
- set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-z,now -pie -s")
- set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,-z,now -s")
--set(CMAKE_SKIP_RPATH TRUE)
--set(CMAKE_INSTALL_RPATH_USE_LINK_PATH FALSE)
--unset(CMAKE_INSTALL_RPATH)
-\ No newline at end of file
-+# set(CMAKE_SKIP_RPATH TRUE)
-+# set(CMAKE_INSTALL_RPATH_USE_LINK_PATH FALSE)
-+# unset(CMAKE_INSTALL_RPATH)
-\ No newline at end of file
-diff --git a/setup.py b/setup.py
-index 56819b4e..dcdff93f 100644
---- a/setup.py
-+++ b/setup.py
-@@ -759,7 +759,7 @@ setup(
-     packages=get_packages(_backends),
-     package_data=get_package_data(_backends),
+@@ -154,7 +155,12 @@ if(TRITON_BUILD_PYTHON_MODULE)
+     include_directories(${Python3_INCLUDE_DIRS})
+     include_directories(${pybind11_INCLUDE_DIR})
+     link_directories(${Python3_LIBRARY_DIRS})
+-    link_libraries(${Python3_LIBRARIES})
++    if(APPLE)
++      # Avoid linking libpython directly to prevent loading a second runtime.
++      add_link_options(-undefined dynamic_lookup)
++    else()
++      link_libraries(${Python3_LIBRARIES})
++    endif()
+     add_link_options(${Python3_LINK_OPTIONS})
+   endif()
+
+@@ -259,6 +265,9 @@ if(TRITON_BUILD_PYTHON_MODULE)
+                   ${PYTHON_SRC_PATH}/interpreter.cc
+                   ${PYTHON_SRC_PATH}/llvm.cc)
+
++  if (TRITON_BUILD_WITH_RISCV_LLVM_COMPONENTS)
++    list(APPEND TRITON_LIBRARIES LLVMRISCVCodeGen LLVMRISCVAsmParser)
++  endif()
+   # Link triton with its dependencies
+   target_link_libraries(triton PUBLIC ${TRITON_LIBRARIES})
+   if(WIN32)
+diff --git a/python/setup.py b/python/setup.py
+index 98fb1bab..4724e723 100644
+--- a/python/setup.py
++++ b/python/setup.py
+@@ -786,7 +786,7 @@ setup(
+     entry_points=get_entry_points(),
+     package_data=package_data,
      include_package_data=True,
 -    ext_modules=[CMakeExtension("triton", "triton/_C/")],
 +    # ext_modules=[CMakeExtension("triton", "triton/_C/")],
      cmdclass={
-         "build_ext": BuildExt,
-         "install": BuildInstall,
-diff --git a/.gitmodules b/.gitmodules
-index b3d4aefb..a31421f5 100644
---- a/.gitmodules
-+++ b/.gitmodules
-@@ -1,6 +1,6 @@
- [submodule "third_party/triton"]
- 	path = third_party/triton
--	url = https://github.com/triton-lang/triton.git
-+	url = git@github.com:triton-lang/triton.git
- 	depth = 1
- [submodule "third_party/ascendnpu-ir"]
- 	path = third_party/ascendnpu-ir
+         "build_ext": CMakeBuild,
+         "build_py": CMakeBuildPy,
+diff --git a/third_party/ascend/language/kernels/gather.py b/third_party/ascend/language/kernels/gather.py
+index 6acfd26e..dd5fffc3 100644
+--- a/third_party/ascend/language/kernels/gather.py
++++ b/third_party/ascend/language/kernels/gather.py
+@@ -29,7 +29,7 @@ import triton.language as tl
+ from triton.language.core import constexpr
+
+
+-@triton.jit
++# @triton.jit
+ def gather_2d_simd(
+     src_ptr,
+     idx_ptr,
+diff --git a/third_party/ascend/lib/TritonToLinalg/CMakeLists.txt b/third_party/ascend/lib/TritonToLinalg/CMakeLists.txt
+index 0ee7608e..71a91f5c 100644
+--- a/third_party/ascend/lib/TritonToLinalg/CMakeLists.txt
++++ b/third_party/ascend/lib/TritonToLinalg/CMakeLists.txt
+@@ -8,7 +8,7 @@ add_triton_library(TritonToLinalg
+         BlockPtrAnalysis.cpp
+         MaskAnalysis.cpp
+         UseAnalysis.cpp
+-        DescriptorConverter
++        DescriptorConverter.cpp
+
+   DEPENDS
+   TritonToLinalgConversionPassIncGen

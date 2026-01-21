@@ -27,6 +27,8 @@ patch = ">=2.8,<3"
 pytorch = ">=2.9.1,<3"
 pybind11 = ">=3.0.1,<4"
 pybind11-global = ">=3.0.1,<4"
+scikit-build = ">=0.18.1,<0.19"
+scikit-build-core = ">=0.11.6,<0.12"
 
 # common tools 
 ripgrep = ">=15.1.0,<16"
@@ -40,4 +42,8 @@ ty = ">=0.0.11,<0.0.12"
 CANN_PATH_0 = "${PIXI_PROJECT_ROOT}/ascend-cann-toolkit/run_package/ascend-bisheng-toolkit/bishengir/bin"
 CANN_PATH_1 = "${PIXI_PROJECT_ROOT}/ascend-cann-toolkit/run_package/cann-toolkit/toolkit/ccec_compiler/bin"
 PATH = "${CANN_PATH_0}:${CANN_PATH_1}:${PATH}"
+# for `AscendNPU-IR`
 BISHENG_INSTALL_PATH = "${CANN_PATH_0}"
+# for `triton-ascend`
+# MLIR_ROOT = "${PIXI_PROJECT_ROOT}/llvm-ascend/llvm-project/build"
+# LLVM_ROOT = "${PIXI_PROJECT_ROOT}/llvm-ascend/llvm-project/build"

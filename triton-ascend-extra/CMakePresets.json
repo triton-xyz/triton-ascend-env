@@ -17,8 +17,11 @@
         "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/build/bin",
         "LLVM_DIR": "${sourceDir}/llvm-ascend/llvm-project/build/lib/cmake/llvm",
         "MLIR_DIR": "${sourceDir}/llvm-ascend/llvm-project/build/lib/cmake/mlir",
-        "TRITON_PLUGIN_DIRS": "${sourceDir}/ascend",
+        "TRITON_BUILD_PROTON": false,
+        "TRITON_BUILD_UT": false,
+        "TRITON_CODEGEN_BACKENDS": "ascend",
         "TRITON_BUILD_PYTHON_MODULE": true,
+        "TRITON_BUILD_WITH_RISCV_LLVM_COMPONENTS": true,
         "LLVM_ENABLE_ASSERTIONS": true
       }
     },

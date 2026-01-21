@@ -2,6 +2,8 @@
 
 env for building `triton-ascend` and `AscendNPU-IR`
 
+check `master` version for https://gitcode.com/Ascend/triton-ascend/tree/master
+
 ## pixi env
 
 - install pixi
@@ -100,7 +102,9 @@ ln -s $PWD/AscendNPU-IR-extra/* $PWD/AscendNPU-IR/
 
 pushd AscendNPU-IR
 
+# NOTE: It may fail and needs to be handled manually
 git apply patch.patch
+
 # git submodule update --init --depth 1
 bash llvm_download.sh
 pushd third-party
@@ -129,7 +133,7 @@ popd
 ```
 
 ```bash
-# tested on `9319a71c74a630d7b2b47676557f29f529165a9c`
+# tested on `main` branch `bb037cdac0ecf20b6621afbd56c812b077c8236e`
 # git clone git@github.com:Ascend/triton-ascend.git
 git clone https://gitcode.com/Ascend/triton-ascend.git
 ln -s $PWD/triton-ascend-extra/* $PWD/triton-ascend/
@@ -137,27 +141,31 @@ ln -s $PWD/llvm-ascend $PWD/triton-ascend/llvm-ascend
 
 pushd triton-ascend
 
+# NOTE: It may fail and needs to be handled manually
 git apply patch.patch
+
 git submodule update --init --depth 1
 
 rm -rf build/CMakeFiles
 rm -rf build/CMakeCache.txt
-cmake --preset osx -S$PWD -B$PWD/build \
+[[ "$(uname)" == "Darwin" ]] && PRESET="osx_lld" || PRESET="osx"
+cmake --preset $PRESET -S$PWD -B$PWD/build \
   -DCMAKE_BUILD_TYPE=Debug \
   -DPython3_EXECUTABLE=$(which python)
 cmake --build $PWD/build --target all
 
-mkdir -p $PWD/third_party/triton/python/triton/_C
-rm -f $PWD/third_party/triton/python/triton/_C/libtriton.so &&
-  ln -s $PWD/build/libtriton.so $PWD/third_party/triton/python/triton/_C/libtriton.so
-rm -f $PWD/ascend/backend/triton-adapter-opt &&
-  ln -s $PWD/build/bin/triton-adapter-opt $PWD/ascend/backend/triton-adapter-opt
+mkdir -p $PWD/python/triton/_C
+rm -f $PWD/python/triton/_C/libtriton.so &&
+  ln -s $PWD/build/libtriton.so $PWD/python/triton/_C/libtriton.so
+rm -f $PWD/third_party/ascend/backend/triton-adapter-opt &&
+  ln -s $PWD/build/bin/triton-adapter-opt $PWD/third_party/ascend/backend/triton-adapter-opt
 
-export TRITON_PLUGIN_DIRS=$PWD/ascend
+pushd python
 # disable
 # ext_modules=[CMakeExtension("triton", "triton/_C/")],
 TRITON_OFFLINE_BUILD=1 DEBUG=1 uv pip install --system -e . --no-build-isolation -vvv
-# uv pip uninstall --system triton
+popd
+# uv pip uninstall --system triton-ascend
 
 python -c "import triton.language as tl"
 python -c "from triton import jit"
@@ -168,6 +176,23 @@ popd
 ## work with `torch_npu`
 
 TODO
+
+## work with `flaggems`
+
+TODO: how to install torch-npu from src
+
+```bash
+git clone git@github.com:flagos-ai/FlagGems.git
+# git clone https://gitcode.com/gh_mirrors/fl/FlagGems.git
+
+pushd FlagGems
+uv pip install --system --no-build-isolation -e . -v
+
+export GEMS_VENDOR="ascend"
+python -c "import flag_gems"
+
+popd
+```
 
 ## work with `cann` docker image
 
