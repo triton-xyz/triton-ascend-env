@@ -100,7 +100,9 @@ ln -s $PWD/AscendNPU-IR-extra/* $PWD/AscendNPU-IR/
 
 pushd AscendNPU-IR
 
+# NOTE: It may fail and needs to be handled manually
 git apply patch.patch
+
 # git submodule update --init --depth 1
 bash llvm_download.sh
 pushd third-party
@@ -129,7 +131,7 @@ popd
 ```
 
 ```bash
-# tested on `9319a71c74a630d7b2b47676557f29f529165a9c`
+# tested on `master` branch `9319a71c74a630d7b2b47676557f29f529165a9c`
 # git clone git@github.com:Ascend/triton-ascend.git
 git clone https://gitcode.com/Ascend/triton-ascend.git
 ln -s $PWD/triton-ascend-extra/* $PWD/triton-ascend/
@@ -137,12 +139,17 @@ ln -s $PWD/llvm-ascend $PWD/triton-ascend/llvm-ascend
 
 pushd triton-ascend
 
+git checkout -b master origin/master
+
+# NOTE: It may fail and needs to be handled manually
 git apply patch.patch
+
 git submodule update --init --depth 1
 
 rm -rf build/CMakeFiles
 rm -rf build/CMakeCache.txt
-cmake --preset osx -S$PWD -B$PWD/build \
+[[ "$(uname)" == "Darwin" ]] && PRESET="osx_lld" || PRESET="osx"
+cmake --preset $PRESET -S$PWD -B$PWD/build \
   -DCMAKE_BUILD_TYPE=Debug \
   -DPython3_EXECUTABLE=$(which python)
 cmake --build $PWD/build --target all
@@ -157,7 +164,7 @@ export TRITON_PLUGIN_DIRS=$PWD/ascend
 # disable
 # ext_modules=[CMakeExtension("triton", "triton/_C/")],
 TRITON_OFFLINE_BUILD=1 DEBUG=1 uv pip install --system -e . --no-build-isolation -vvv
-# uv pip uninstall --system triton
+# uv pip uninstall --system triton-ascend
 
 python -c "import triton.language as tl"
 python -c "from triton import jit"
