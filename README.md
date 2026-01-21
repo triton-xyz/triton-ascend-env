@@ -159,7 +159,7 @@ pushd python
 # ext_modules=[CMakeExtension("triton", "triton/_C/")],
 TRITON_OFFLINE_BUILD=1 DEBUG=1 uv pip install --system -e . --no-build-isolation -vvv
 popd
-# uv pip uninstall --system triton
+# uv pip uninstall --system triton-ascend
 
 python -c "import triton.language as tl"
 python -c "from triton import jit"
