@@ -2,7 +2,7 @@
 
 env for building `triton-ascend` and `AscendNPU-IR`
 
-check `master` version for https://gitcode.com/Ascend/triton-ascend/tree/master
+check [`master`](https://github.com/triton-xyz/triton-ascend-env/tree/master) branch for https://gitcode.com/Ascend/triton-ascend/tree/master
 
 ## pixi env
 
