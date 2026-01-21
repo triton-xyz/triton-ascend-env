@@ -100,7 +100,9 @@ ln -s $PWD/AscendNPU-IR-extra/* $PWD/AscendNPU-IR/
 
 pushd AscendNPU-IR
 
+# NOTE: It may fail and needs to be handled manually
 git apply patch.patch
+
 # git submodule update --init --depth 1
 bash llvm_download.sh
 pushd third-party
@@ -137,7 +139,9 @@ ln -s $PWD/llvm-ascend $PWD/triton-ascend/llvm-ascend
 
 pushd triton-ascend
 
+# NOTE: It may fail and needs to be handled manually
 git apply patch.patch
+
 git submodule update --init --depth 1
 
 rm -rf build/CMakeFiles
