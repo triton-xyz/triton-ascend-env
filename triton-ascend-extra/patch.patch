@@ -44,10 +44,10 @@ index 765ddebe..9df943d3 100644
    target_link_libraries(triton PUBLIC ${TRITON_LIBRARIES})
    if(WIN32)
 diff --git a/python/setup.py b/python/setup.py
-index 98fb1bab..4724e723 100644
+index 4694f0b3..c497031a 100644
 --- a/python/setup.py
 +++ b/python/setup.py
-@@ -786,7 +786,7 @@ setup(
+@@ -792,7 +792,7 @@ setup(
      entry_points=get_entry_points(),
      package_data=package_data,
      include_package_data=True,
@@ -56,6 +56,17 @@ index 98fb1bab..4724e723 100644
      cmdclass={
          "build_ext": CMakeBuild,
          "build_py": CMakeBuildPy,
+@@ -820,8 +820,8 @@ setup(
+     test_suite="tests",
+     install_requires=[
+         "attrs==24.2.0",
+-        "numpy==1.26.4",
+-        "scipy==1.13.1",
++        "numpy",
++        "scipy",
+         "decorator==5.1.1",
+         "psutil==6.0.0",
+         "pytest==8.3.2",
 diff --git a/third_party/ascend/language/kernels/gather.py b/third_party/ascend/language/kernels/gather.py
 index 6acfd26e..dd5fffc3 100644
 --- a/third_party/ascend/language/kernels/gather.py

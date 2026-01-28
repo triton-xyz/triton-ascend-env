@@ -138,7 +138,7 @@ popd
 ```
 
 ```bash
-# tested on `main` branch `bb037cdac0ecf20b6621afbd56c812b077c8236e`
+# tested on `main` branch `91bede2c9efa364fd7691ddd02c8fefd4f9887b7`
 # git clone git@github.com:Ascend/triton-ascend.git
 git clone https://gitcode.com/Ascend/triton-ascend.git
 ln -s $PWD/triton-ascend-extra/* $PWD/triton-ascend/
@@ -168,7 +168,7 @@ rm -f $PWD/third_party/ascend/backend/triton-adapter-opt &&
 pushd python
 # disable
 # ext_modules=[CMakeExtension("triton", "triton/_C/")],
-TRITON_OFFLINE_BUILD=1 DEBUG=1 uv pip install --system -e . --no-build-isolation -vvv
+TRITON_OFFLINE_BUILD=1 DEBUG=1 uv pip install --system -e . --no-build-isolation -v
 popd
 # uv pip uninstall --system triton-ascend
 
