@@ -6,7 +6,7 @@ index 765ddebe..9df943d3 100644
  option(TRITON_BUILD_PYTHON_MODULE "Build Python Triton bindings" OFF)
  option(TRITON_BUILD_PROTON "Build the Triton Proton profiler" ON)
  option(TRITON_BUILD_UT "Build C++ Triton Unit Tests" ON)
-+option(TRITON_BUILD_WITH_RISCV_LLVM_COMPONENTS "Build C++ Triton with extra riscv components" ON)
++option(TRITON_BUILD_WITH_RISCV_LLVM_COMPONENTS "Build C++ Triton with extra riscv components" OFF)
  set(TRITON_CODEGEN_BACKENDS "" CACHE STRING "Enable different codegen backends")
 
  # Ensure Python3 vars are set correctly

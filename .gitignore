@@ -6,4 +6,5 @@ pixi.lock
 *.run
 /ascend-cann-toolkit/
 
+.DS_Store
 __pycache__
