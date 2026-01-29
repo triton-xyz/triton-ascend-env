@@ -72,24 +72,29 @@ pixi shell
 
 ## get cann toolkit
 
+version may change, prefer latest version
+
 - https://www.hiascend.com/developer/download/community/result?module=cann
-  `Ascend-cann-toolkit_8.5.0.alpha002_linux-x86_64.run`
-  `Ascend-cann-toolkit_8.5.0.alpha002_linux-x86_64.run`
+  `Ascend-cann-toolkit_8.5.0_linux-x86_64.run`
+  `Ascend-cann-toolkit_8.5.0_linux-x86_64.run`
 
 ```bash
-chmod +x Ascend-cann-toolkit_8.5.0.alpha002_linux-x86_64.run
-./Ascend-cann-toolkit_8.5.0.alpha002_linux-x86_64.run --extract=ascend-cann-toolkit
+chmod +x Ascend-cann-toolkit_8.5.0_linux-x86_64.run
+./Ascend-cann-toolkit_8.5.0_linux-x86_64.run --extract=ascend-cann-toolkit
 pushd ascend-cann-toolkit/run_package
-./Ascend-BiSheng-toolkit_x86.run --extract=ascend-bisheng-toolkit
-./CANN-toolkit-8.5.t8.0.b060-linux.x86_64.run --extract=cann-toolkit
-# ./CANN-compiler-8.5.t8.0.b060-linux.x86_64.run --install-path=cann-compiler
+./ascendnpu-ir_1.0.0_linux-x86.run --noexec --extract=ascendnpu-ir
+./cann-bisheng-compiler_8.5.0_linux-x86_64.run --noexec --extract=cann-bisheng-compiler
+# ./cann-asc-devkit_8.5.0_linux-x86_64.run --noexec --extract=cann-asc-devkit
+# ./cann-asc-tools_8.5.0_linux-x86_64.run --noexec --extract=cann-asc-tools
 popd
 
-# prefer `activation.env` in `pixi.toml`
-# hivmc, bishengir-opt, bishengir-compile, bishengir-hivm-compile
-# ln -s $PWD/ascend-cann-toolkit/run_package/ascend-bisheng-toolkit/bishengir/bin/* $PWD/.pixi/envs/default/bin/
-# only use `hivmc`
-# ln -s $PWD/ascend-cann-toolkit/run_package/ascend-bisheng-toolkit/bishengir/bin/hivmc $PWD/.pixi/envs/default/bin/hivmc
+# `bishengir-compile`, `bishengir-opt`, `hivmc`
+# $PWD/ascend-cann-toolkit/run_package/ascendnpu-ir/bishengir/bin
+# `bisheng` and `llvm-*`
+# $PWD/ascend-cann-toolkit/run_package/cann-bisheng-compiler/bisheng_compiler/bin
+
+# prefer `activation.env` in `pixi.toml` instead of `ln -s`
+# ln -s bin/* $PWD/.pixi/envs/default/bin/
 ```
 
 ## build `AscendNPU-IR`
@@ -133,7 +138,7 @@ popd
 ```
 
 ```bash
-# tested on `main` branch `bb037cdac0ecf20b6621afbd56c812b077c8236e`
+# tested on `main` branch `91bede2c9efa364fd7691ddd02c8fefd4f9887b7`
 # git clone git@github.com:Ascend/triton-ascend.git
 git clone https://gitcode.com/Ascend/triton-ascend.git
 ln -s $PWD/triton-ascend-extra/* $PWD/triton-ascend/
@@ -163,7 +168,7 @@ rm -f $PWD/third_party/ascend/backend/triton-adapter-opt &&
 pushd python
 # disable
 # ext_modules=[CMakeExtension("triton", "triton/_C/")],
-TRITON_OFFLINE_BUILD=1 DEBUG=1 uv pip install --system -e . --no-build-isolation -vvv
+TRITON_OFFLINE_BUILD=1 DEBUG=1 uv pip install --system -e . --no-build-isolation -v
 popd
 # uv pip uninstall --system triton-ascend
 
@@ -199,15 +204,16 @@ popd
 https://www.hiascend.com/developer/ascendhub/detail/17da20d1c2b6493cb38765adeba85884
 
 ```bash
-docker pull --platform=amd64 swr.cn-south-1.myhuaweicloud.com/ascendhub/cann:8.5.0.alpha002-910b-ubuntu22.04-py3.11
-docker tag swr.cn-south-1.myhuaweicloud.com/ascendhub/cann:8.5.0.alpha002-910b-ubuntu22.04-py3.11 \
-  cann:8.5.0.alpha002-910b-ubuntu22.04-py3.11
+
+docker pull --platform=amd64 swr.cn-south-1.myhuaweicloud.com/ascendhub/cann:8.5.0-910b-ubuntu22.04-py3.11
+docker tag swr.cn-south-1.myhuaweicloud.com/ascendhub/cann:8.5.0-910b-ubuntu22.04-py3.11 \
+  cann:8.5.0-910b-ubuntu22.04-py3.11
 
 args=(
-  --name cann_dev_0
+  --name cann_dev_1
   --entrypoint /usr/bin/bash
-  cann:8.5.0.alpha002-910b-ubuntu22.04-py3.11
+  cann:8.5.0-910b-ubuntu22.04-py3.11
 )
 docker run -d -it "${args[@]}"
-docker exec -it cann_dev_0 bash
+docker exec -it cann_dev_1 bash
 ```
